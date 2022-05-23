@@ -2,8 +2,9 @@
 GUI Sauna Application
 
 Background:
-While visiting a sauna in Colorado, I discovered a flaw in the sauna's interface logic. The timer that would turn the heating element off as soon 
-as the sauna is powered. Therefore, it's a not a guarentee the the actual temperature will reach the setpoint as it the timer can time out before then.
+While visiting a sauna in Colorado, I discovered a flaw in the sauna's interface logic. The timer that would turn the heating element off starts as soon 
+as the sauna is powered. Therefore, it's a not a guarentee the the actual temperature will reach the setpoint as the timer can time out before then. I challenged
+myself to build a simple Sauna interface with the logic that the heating element timer starts when the actual temperature equals the target temperature.
 
 Program:
 The program will be a GUI that is built to simulate a basic Sauna interface. The target temperature can be set and a timer(10,20,30seconds) must be chosen. Once
