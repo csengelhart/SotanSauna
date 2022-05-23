@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -142,9 +144,40 @@ public class SaunaMain extends Application{
 		
 		
 		this.tempSet = new Button("SET");
-		
 		// event handler
-		// when user clicks set button, target temp is set as setpoint
+		// when user clicks set button, target temp is set as setpoint and become uneditable
+		// when user clicks set again, the target textfield becomes editable again
+		
+		this.tempSet.setOnMouseClicked(new EventHandler <MouseEvent>()
+		{
+			
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				// if single click registered, enable editing of target textfield, and enable +,- buttons
+				if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+					if(mouseEvent.getClickCount() == 1)
+					{
+						targetTextField.setEditable(true);
+						tempUp.setDisable(false);
+						tempDown.setDisable(false);
+						
+					}
+					
+					// if double click registered, disable target textfield,and +, - buttons
+					else if(mouseEvent.getClickCount() == 2) 
+					{
+						targetTextField.setEditable(false);
+						tempUp.setDisable(true);
+						tempDown.setDisable(true);
+					}
+				}
+				
+				
+			}
+
+		
+	
+		});
 		
 		
 		// mapping of buttons on scene 
