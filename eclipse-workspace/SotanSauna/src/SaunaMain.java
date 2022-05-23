@@ -69,7 +69,8 @@ public class SaunaMain extends Application{
 		
 		// temp indicators
 		this.actualTemp = new Button("ACTUAL");
-		
+		TextField actualTempTextField = new TextField("68"); // create uneditable texfield for displaying actual temp
+		actualTempTextField.setEditable(false);
 		// event handler
 		// indicator will show current temp (default temp is room temp 68F)
 		
@@ -148,20 +149,25 @@ public class SaunaMain extends Application{
 		
 		// mapping of buttons on scene 
 		
+		// create HBox for temp controls
+		HBox tempControlsHbox = new HBox(10,tempUp,targetTextField,tempDown,tempSet);
+		tempControlsHbox.setAlignment(Pos.CENTER);
+		
+		// create HBox for actualTemp indicator and actual temp textfield
+		HBox actualTempHbox = new HBox(20,actualTemp,actualTempTextField);
+		actualTempHbox.setAlignment(Pos.CENTER);
+		
 		// create VBox for temp indcators
-		VBox tempIndicatorVbox = new VBox(50,actualTemp,targetTemp);
+		VBox tempIndicatorVbox = new VBox(50,actualTempHbox,tempControlsHbox);
 		tempIndicatorVbox.setAlignment(Pos.CENTER);
+		
 		
 		// create HBox for timers 
 		HBox tempTimersHbox = new HBox(20,timer10,timer20,timer30);
 		tempTimersHbox.setAlignment(Pos.CENTER_LEFT);
 		
-		// create HBox for temp controls
-		HBox tempControlsHbox = new HBox(20,tempUp,targetTextField,tempDown,tempSet);
-		tempControlsHbox.setAlignment(Pos.CENTER_LEFT);
-		
 		// create VBox to contain HBox timers and temp controls
-		VBox saunaControlsVbox = new VBox(50,tempTimersHbox,tempControlsHbox);
+		VBox saunaControlsVbox = new VBox(50,tempTimersHbox);
 		saunaControlsVbox.setAlignment(Pos.CENTER_LEFT);
 		
 		
@@ -169,6 +175,7 @@ public class SaunaMain extends Application{
 		this.root.setTop(powerButton);
 		this.root.setBottom(powerLabel);
 		this.root.setCenter(tempIndicatorVbox);
+		//this.root.setCenter(actualTempHbox);
 		this.root.setRight(saunaControlsVbox);
 		this.stage.setScene(scene);
 		this.stage.show(); 
