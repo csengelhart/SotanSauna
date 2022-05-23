@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -72,6 +73,7 @@ public class SaunaMain extends Application{
 		// event handler
 		// indicator will show current temp (default temp is room temp 68F)
 		
+		
 		this.targetTemp = new Button("TARGET");
 		
 		// event handler
@@ -98,15 +100,44 @@ public class SaunaMain extends Application{
 		
 		
 		// temp controls
-		this.tempUp = new Button("UP");
-		
+		this.tempUp = new Button();
+		this.tempUp.setText("+");
+		TextField targetTextField = new TextField(); // create new TextField object
 		// event handler
 		// when user clicks up button target temp increases by 1F
 		
+		this.tempUp.setOnAction(new EventHandler <ActionEvent>()
+				{
+
+					@Override
+					public void handle(ActionEvent event) {
+						int num = Integer.parseInt(targetTextField.getText()); // getting value from textfield
+						num += 1; // increment value from textfield by 1
+						targetTextField.setText("" + num); // display result
+						
+					}
+
+			
+				});
 		
-		this.tempDown = new Button("DOWN");
+
+		this.tempDown = new Button();
+		tempDown.setText("-");
 		// event handler
 		// when user clicks down button target temp decreases by 1F
+		this.tempDown.setOnAction(new EventHandler <ActionEvent>()
+		{
+
+			@Override
+			public void handle(ActionEvent event) {
+				int num = Integer.parseInt(targetTextField.getText()); // getting value from textfield
+				num -= 1; // decrement value from textfield by 1
+				targetTextField.setText("" + num); // display result
+				
+			}
+
+	
+		});
 		
 		
 		this.tempSet = new Button("SET");
@@ -126,7 +157,7 @@ public class SaunaMain extends Application{
 		tempTimersHbox.setAlignment(Pos.CENTER_LEFT);
 		
 		// create HBox for temp controls
-		HBox tempControlsHbox = new HBox(20,tempUp,tempDown,tempSet);
+		HBox tempControlsHbox = new HBox(20,tempUp,targetTextField,tempDown,tempSet);
 		tempControlsHbox.setAlignment(Pos.CENTER_LEFT);
 		
 		// create VBox to contain HBox timers and temp controls
