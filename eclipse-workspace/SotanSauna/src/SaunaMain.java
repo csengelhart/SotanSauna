@@ -1,4 +1,10 @@
+
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class SaunaMain extends Application{
 
@@ -34,11 +41,14 @@ public class SaunaMain extends Application{
 	private Button timer10;
 	private Button timer20;
 	private Button timer30;
+	int timer = 0;
 	
 	// temp controls
 	private Button tempUp;
 	private Button tempDown;
 	private Button tempSet;
+	boolean set = false; // flag to let power button check if the target temp is set
+	
 	
 	@Override
 	public void start(Stage primaryStage)
@@ -47,26 +57,14 @@ public class SaunaMain extends Application{
 		stage.setTitle("SotanSauna");
 		this.root = new BorderPane();
 		
-
+		
+//*****************************************************************************************************************************		
 
 		// create buttons and event handlers
 		
-		this.scene = new Scene(root, 700,500);
+		this.scene = new Scene(root, 600,500);
 		
-		// power button
-		this.powerButton = new Button("Power");
-		
-		// future addition: when power button is clicked actual temp raises to setTemp
-		this.powerButton.setOnAction(new EventHandler<ActionEvent>()
-				{
-
-					@Override
-					public void handle(ActionEvent arg0) {
-						powerLabel.setText("Heating");
-						
-					}
-					
-				});
+	
 		
 		
 		// temp indicators
@@ -82,26 +80,66 @@ public class SaunaMain extends Application{
 		// event handler
 		// indicator will show target temp
 		
+		// textfield for timer buttons
+		TextField timerTextField = new TextField(); 
+		
 		// timers
 		this.timer10 = new Button("10");
 		
 		//event handler
 		// timer will start after actual temp = target temp
-		// timer will be set for 10 seconds
+		// when "10" is clicked, the timer variable is set to 10
+		this.timer10.setOnAction(new EventHandler <ActionEvent>() 
+		{
+
+			@Override
+			public void handle(ActionEvent event) {
+				timerTextField.setText("10");
+				
+			}
+
+	
+		});
+		
+		
 		
 		this.timer20 = new Button("20");
 		
 		//event handler
 		// timer will start after actual temp = target temp
-		// timer will be set for 20 seconds
+		// when "20" is clicked, the timer variable is set to 20
+		this.timer20.setOnAction(new EventHandler <ActionEvent>() 
+		{
+
+			@Override
+			public void handle(ActionEvent event) {
+				timerTextField.setText("20");
+				
+			}
+
+	
+		});
+		
+		
+		
 		
 		this.timer30 = new Button("30");
 		
 		//event handler
 		// timer will start after actual temp = target temp
-		// timer will be set for 30 seconds
-		
-		
+		// when "30" is clicked, the timer variable is set to 30
+				this.timer30.setOnAction(new EventHandler <ActionEvent>() 
+				{
+
+					@Override
+					public void handle(ActionEvent event) {
+						timerTextField.setText("30");
+						
+					}
+
+			
+				});
+				
 		// temp controls
 		this.tempUp = new Button();
 		this.tempUp.setText("+");
@@ -160,6 +198,7 @@ public class SaunaMain extends Application{
 						targetTextField.setEditable(true);
 						tempUp.setDisable(false);
 						tempDown.setDisable(false);
+						set = false;
 						
 					}
 					
@@ -169,6 +208,7 @@ public class SaunaMain extends Application{
 						targetTextField.setEditable(false);
 						tempUp.setDisable(true);
 						tempDown.setDisable(true);
+						set = true;
 					}
 				}
 				
@@ -180,6 +220,59 @@ public class SaunaMain extends Application{
 		});
 		
 		
+		
+		// power button
+		this.powerButton = new Button("Power");
+		
+		// conditional: if target temp is set (set variable is set to true) and timer variable > 0 
+		// execute: actual temp increasing to target temp 
+		
+		{
+		// future addition: when power button is clicked actual temp raises to setTemp
+			this.powerButton.setOnAction(new EventHandler<ActionEvent>()
+					{
+
+					@Override
+						public void handle(ActionEvent arg0) {
+							timer = Integer.parseInt(timerTextField.getText()); // getting value from textfield
+							powerLabel.setText("" + timer);
+						
+							// if timer != 0 and set flag variable is true
+							// set actual temp equal to target temp and start timer
+							
+							// create Timer Object
+							Timer timerObj = new Timer();
+							
+							if(timer != 0 && set == true)
+							{
+								
+								// get target temp from textfield
+								String targetTemp = targetTextField.getText();
+								// set actual temp equal to target temp
+								actualTempTextField.setText(targetTemp);
+								
+								// start timer, timer length based on which timer button was selected
+								// after timer, set actual temp back to 68
+								new Timeline(new KeyFrame(
+								        Duration.millis(timer * 1000),
+								        ae -> actualTempTextField.setText("68")))
+								    .play();
+								
+								
+							
+							}
+							
+							else 
+								powerLabel.setText("Make sure temperature is set and timer selected");
+							
+							
+					}
+					
+				});
+		}
+		
+		
+// *******************************************************************************************************		
 		// mapping of buttons on scene 
 		
 		// create HBox for temp controls
@@ -200,7 +293,7 @@ public class SaunaMain extends Application{
 		tempTimersHbox.setAlignment(Pos.CENTER_LEFT);
 		
 		// create VBox to contain HBox timers and temp controls
-		VBox saunaControlsVbox = new VBox(50,tempTimersHbox);
+		VBox saunaControlsVbox = new VBox(50,tempTimersHbox,timerTextField);
 		saunaControlsVbox.setAlignment(Pos.CENTER_LEFT);
 		
 		
