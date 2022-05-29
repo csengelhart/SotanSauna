@@ -144,18 +144,24 @@ public class SaunaMain extends Application{
 		this.tempUp = new Button();
 		this.tempUp.setText("+");
 		TextField targetTextField = new TextField(); // create new TextField object
+		targetTextField.setText("68");
+		targetTextField.setEditable(false);
 		// event handler
-		// when user clicks up button target temp increases by 1F
+		// when user clicks up button target temp increases by 1F up to max of 194
 		
 		this.tempUp.setOnAction(new EventHandler <ActionEvent>()
 				{
 
 					@Override
 					public void handle(ActionEvent event) {
-						int num = Integer.parseInt(targetTextField.getText()); // getting value from textfield
+						// if target temp is not equal to 194, increase it by 1
+						if(Integer.parseInt(targetTextField.getText()) != 194)
+						{int num = Integer.parseInt(targetTextField.getText()); // getting value from textfield
 						num += 1; // increment value from textfield by 1
 						targetTextField.setText("" + num); // display result
+						}
 						
+							
 					}
 
 			
@@ -165,16 +171,17 @@ public class SaunaMain extends Application{
 		this.tempDown = new Button();
 		tempDown.setText("-");
 		// event handler
-		// when user clicks down button target temp decreases by 1F
+		// when user clicks down button target temp decreases by 1F up to minimum 68
 		this.tempDown.setOnAction(new EventHandler <ActionEvent>()
 		{
 
 			@Override
 			public void handle(ActionEvent event) {
-				int num = Integer.parseInt(targetTextField.getText()); // getting value from textfield
+				if(Integer.parseInt(targetTextField.getText()) != 68)	
+				{int num = Integer.parseInt(targetTextField.getText()); // getting value from textfield
 				num -= 1; // decrement value from textfield by 1
 				targetTextField.setText("" + num); // display result
-				
+				}
 			}
 
 	
@@ -234,14 +241,15 @@ public class SaunaMain extends Application{
 
 					@Override
 						public void handle(ActionEvent arg0) {
-							timer = Integer.parseInt(timerTextField.getText()); // getting value from textfield
-							powerLabel.setText("" + timer);
 						
+							// if timerTextField is not empty, get value from textfield
+							if(!(timerTextField.getText().isEmpty()))
+							{timer = Integer.parseInt(timerTextField.getText()); // getting value from textfield
+							powerLabel.setText("" + timer);
+							}	
+							
 							// if timer != 0 and set flag variable is true
 							// set actual temp equal to target temp and start timer
-							
-							// create Timer Object
-							Timer timerObj = new Timer();
 							
 							if(timer != 0 && set == true)
 							{
@@ -250,6 +258,9 @@ public class SaunaMain extends Application{
 								String targetTemp = targetTextField.getText();
 								// set actual temp equal to target temp
 								actualTempTextField.setText(targetTemp);
+								
+								// create Timer Object
+								Timer timerObj = new Timer();
 								
 								// start timer, timer length based on which timer button was selected
 								// after timer, set actual temp back to 68
