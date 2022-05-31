@@ -68,28 +68,23 @@ public class SaunaMain extends Application{
 		
 		
 		// temp indicators
-		this.actualTemp = new Button("ACTUAL");
-		TextField actualTempTextField = new TextField("68"); // create uneditable texfield for displaying actual temp
+		actualTemp = new Button("ACTUAL");
+		actualTemp.setStyle("-fx-background-color: gainsboro;");
+		TextField actualTempTextField = new TextField("68"); // create uneditable texfield for displaying actual temp 
+		// default temp is 68F
 		actualTempTextField.setEditable(false);
-		// event handler
-		// indicator will show current temp (default temp is room temp 68F)
-		
-		
-		this.targetTemp = new Button("TARGET");
-		
-		// event handler
-		// indicator will show target temp
 		
 		// textfield for timer buttons
 		TextField timerTextField = new TextField(); 
 		
 		// timers
-		this.timer10 = new Button("10");
+		timer10 = new Button("10");
+		timer10.setStyle("-fx-background-color: gainsboro");
+		timer10.setStyle("-fx-border-color: black");
 		
 		//event handler
 		// timer will start after actual temp = target temp
-		// when "10" is clicked, the timer variable is set to 10
-		this.timer10.setOnAction(new EventHandler <ActionEvent>() 
+		timer10.setOnAction(new EventHandler <ActionEvent>() 
 		{
 
 			@Override
@@ -103,12 +98,12 @@ public class SaunaMain extends Application{
 		
 		
 		
-		this.timer20 = new Button("20");
-		
+		timer20 = new Button("20");
+		timer20.setStyle("-fx-background-color: gainsboro");
+		timer20.setStyle("-fx-border-color: black");
 		//event handler
 		// timer will start after actual temp = target temp
-		// when "20" is clicked, the timer variable is set to 20
-		this.timer20.setOnAction(new EventHandler <ActionEvent>() 
+		timer20.setOnAction(new EventHandler <ActionEvent>() 
 		{
 
 			@Override
@@ -123,11 +118,12 @@ public class SaunaMain extends Application{
 		
 		
 		
-		this.timer30 = new Button("30");
+		timer30 = new Button("30");
+		timer30.setStyle("-fx-background-color: gainsboro");
+		timer30.setStyle("-fx-border-color: black");
 		
 		//event handler
 		// timer will start after actual temp = target temp
-		// when "30" is clicked, the timer variable is set to 30
 				this.timer30.setOnAction(new EventHandler <ActionEvent>() 
 				{
 
@@ -141,15 +137,17 @@ public class SaunaMain extends Application{
 				});
 				
 		// temp controls
-		this.tempUp = new Button();
-		this.tempUp.setText("+");
+		tempUp = new Button();
+		tempUp.setText("+");
+		tempUp.setStyle("-fx-background-color: gainsboro");
+		tempUp.setStyle("-fx-border-color: black");
 		TextField targetTextField = new TextField(); // create new TextField object
 		targetTextField.setText("68");
 		targetTextField.setEditable(false);
 		// event handler
 		// when user clicks up button target temp increases by 1F up to max of 194
 		
-		this.tempUp.setOnAction(new EventHandler <ActionEvent>()
+		tempUp.setOnAction(new EventHandler <ActionEvent>()
 				{
 
 					@Override
@@ -168,11 +166,12 @@ public class SaunaMain extends Application{
 				});
 		
 
-		this.tempDown = new Button();
+		tempDown = new Button();
 		tempDown.setText("-");
+		tempDown.setStyle("-fx-border-color: black");
 		// event handler
 		// when user clicks down button target temp decreases by 1F up to minimum 68
-		this.tempDown.setOnAction(new EventHandler <ActionEvent>()
+		tempDown.setOnAction(new EventHandler <ActionEvent>()
 		{
 
 			@Override
@@ -188,12 +187,13 @@ public class SaunaMain extends Application{
 		});
 		
 		
-		this.tempSet = new Button("SET");
+		tempSet = new Button("SET");
+		tempSet.setStyle("-fx-border-color: black");
 		// event handler
 		// when user clicks set button, target temp is set as setpoint and become uneditable
 		// when user clicks set again, the target textfield becomes editable again
 		
-		this.tempSet.setOnMouseClicked(new EventHandler <MouseEvent>()
+		tempSet.setOnMouseClicked(new EventHandler <MouseEvent>()
 		{
 			
 			@Override
@@ -229,14 +229,16 @@ public class SaunaMain extends Application{
 		
 		
 		// power button
-		this.powerButton = new Button("Power");
+		powerButton = new Button("Power");
+		powerButton.setStyle("-fx-background-color: gainsboro");
+		powerButton.setStyle("-fx-border-color: black");
 		
 		// conditional: if target temp is set (set variable is set to true) and timer variable > 0 
 		// execute: actual temp increasing to target temp 
 		
 		{
 		// future addition: when power button is clicked actual temp raises to setTemp
-			this.powerButton.setOnAction(new EventHandler<ActionEvent>()
+			powerButton.setOnAction(new EventHandler<ActionEvent>()
 					{
 
 					@Override
@@ -256,6 +258,9 @@ public class SaunaMain extends Application{
 								
 								// get target temp from textfield
 								String targetTemp = targetTextField.getText();
+								//change power button color to green
+								powerButton.setStyle("-fx-background-color: lightgreen");
+								
 								// set actual temp equal to target temp
 								actualTempTextField.setText(targetTemp);
 								
@@ -266,13 +271,14 @@ public class SaunaMain extends Application{
 								// after timer, set actual temp back to 68
 								new Timeline(new KeyFrame(
 								        Duration.millis(timer * 1000),
-								        ae -> actualTempTextField.setText("68")))
+								        ae -> { 
+								          actualTempTextField.setText("68");
+								          powerButton.setStyle("fx-background-color: gainsboro");
+								          powerButton.setStyle("-fx-border-color: black");
+								        }))
 								    .play();
 								
-								
-							
 							}
-							
 							else 
 								powerLabel.setText("Make sure temperature is set and timer selected");
 							
